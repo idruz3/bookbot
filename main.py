@@ -1,17 +1,26 @@
 from stats import numbers_of_words
 from stats import get_count_words
+from stats import get_sorted
+import sys
+
 def get_book_text(path):
     with open(path) as file:
-        file_contents = file.read()
-        return file_contents    
+        return file.read()
 
 def main():
-    filepath = "books/frankenstein.txt"
-    get_text = get_book_text(filepath)
-    count_words = numbers_of_words(get_text)
-    get_chars = get_count_words(get_text)
-    print(f"{count_words} words found in the document")
-    print(get_chars)
+    if len(sys.argv) < 2:
+        print("Usage: python main.py <path_to_book>")
+        sys.exit(1)
+        
+    book_path = sys.argv[1]
+    book_text = get_book_text(book_path)
+    word_count = numbers_of_words(book_text)
+    char_counts = get_count_words(book_text)
+    sorted_chars = get_sorted(char_counts)
+    
+    print(f"Found {word_count} total words")
+    for char in sorted_chars:
+        print(f"{char}: {sorted_chars[char]}")
 
-
-main()
+if __name__ == "__main__":
+    main()
